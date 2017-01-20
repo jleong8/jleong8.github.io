@@ -3,7 +3,7 @@ layout: project
 type: project
 image: images/bioProjectCoverPic.png
 title: Species Diversity
-permalink: projects/micromouse
+permalink: projects/speciesdiversity
 date: 2015
 labels:
   - Ecology
