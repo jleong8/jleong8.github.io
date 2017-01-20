@@ -12,6 +12,6 @@ labels:
 summary: My team studied how rainfall and sunlight affected species diversity along the Wa'ahila Ridge 
 ---
 
-<div class="ui small rounded images">
+<div class="ui medium right floated rounded image">
   <img class="ui image" src="../images/bioProjectMap.png">
 </div>
