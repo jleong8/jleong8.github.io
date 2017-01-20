@@ -29,20 +29,17 @@
   },
   "interests": [
     {
-      "name": "internet of things",
+      "name": "Biology",
       "keywords": [
-        "Arduino",
-        "TI MSP430"
+        "Ecology",
+        "Cell and Molecular Biology"
       ]
     },
     {
-      "name": "data mining",
+      "name": "Dentistry",
       "keywords": [
       ]
     },
-    {
-      "name": "artificial intelligence",
-      "keywords": [
       ]
     }
   ],
