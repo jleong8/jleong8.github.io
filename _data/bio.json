@@ -67,11 +67,15 @@
       "studyType": "B.A.",
       "startDate": "2013-09-01",
       "endDate": "Present",
-      "area" : "Biology (expected Fall, 2017)",
-      "studyType": "Minor",
       "gpa": "",
       "courses": [
        ]
+    },
+    {
+      "institution": "University of Hawaii, Honolulu, HI",
+      "area": "Biology (expected Fall, 2017)",
+      "studyType": "Minor"
+      ]
     }
   ],
   "work": [
