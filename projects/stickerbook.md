@@ -1,7 +1,7 @@
 ---
 layout: project
 type: project
-image: images/sticker.jpg
+image: images/sticker.png
 title: Sticker Book
 permalink: projects/stickerbook
 date: 2015
