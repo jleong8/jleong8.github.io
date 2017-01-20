@@ -10,3 +10,8 @@ labels:
   - Species diversity
   - Abiotic/Biotic
 summary: My team studied how rainfall and sunlight affected species diversity along the Wa'ahila Ridge 
+---
+
+<div class="ui small rounded images">
+  <img class="ui image" src="../images/bioProjectMap.png">
+</div>
