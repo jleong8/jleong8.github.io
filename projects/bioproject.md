@@ -14,5 +14,5 @@ summary: My team studied how rainfall and sunlight affected species diversity al
 
 <div class="ui medium right floated rounded image">
   <img class="ui image" src="../images/bioProjectMap.png">
-  <img class="ui image" src="../images/bioProjectGraph.jpg">
+  <img class="ui image" src="../images/bioProjectGraph.png">
 </div>
