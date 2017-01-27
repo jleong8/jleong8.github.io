@@ -24,7 +24,7 @@ code which is more discouraging for others to help. In this question, the code s
 
 ## Good Example
 
-<img class="ui large right spaced image" src="../images/goodexample.jpg")
+<img class="ui large right spaced image" src="../images/goodexample.jpg">
 
 This is an example of a smart question. The person here first establishes themselves as a begineer which may lead others to be more
 leniant on the type of question he/she is asking. Next, the code also posts his attempt and the result. This shows that there was an
