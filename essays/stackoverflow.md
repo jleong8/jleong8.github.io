@@ -31,3 +31,7 @@ leniant on the type of question he/she is asking. Next, the code also posts his 
 attempt made which others may see the strong effort being put in and they may be willing to help. There is also analysis of the problem, here it says that he/she wants a randomInteger function to run through the whole loop and there is also information on how they want it 
 to look. This post shows a lot of thought behind it and is not simple copy and paste of code and waiting for someone to just give them the answer.
 
+## Conclusion + What have I learned?
+
+After reading Eric Raymond's "How to Ask Questions the Smart Way", I am more informed on how I should approach any problems I have. I have never posted onto websites such as StackOverflow but after gaining this new information I now know how to post appropriately. It never occurred to me how complex asking a question can become but I agree with a lot of the points Eric Raymond makes. I think it is important to first make an attempt at the question and then try look for information based around it before asking. People are also taking time out of their day to answer your question so it is important to make it as easy for them as possible to read through it. I want others to see me as a worthy learner and I hope to be able to apply this newfound knowledge and ask smarter questions. 
+
