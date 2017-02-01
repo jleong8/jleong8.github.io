@@ -1,7 +1,7 @@
 ---
 layout: essay
 type: essay
-title: Github
+title: Configuration Management
 date: 2017-01-31
 labels:
   - ICS 314
