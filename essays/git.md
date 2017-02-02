@@ -7,6 +7,8 @@ labels:
   - ICS 314
 ---
 
+<img class="ui tiny right spaced image" src="../images/git.png">
+
 ## Configuration Management
 
 Configuration management can be a very advantageous skill to have especially when it comes to working with large sets of files 
