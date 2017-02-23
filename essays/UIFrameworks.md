@@ -7,7 +7,7 @@ labels:
   - ICS 314
 ---
 
-<img class="ui medium right spaced image" src="../images/islandsnow.png">
+<img class="ui medium right spaced image" src="../images/islandsnow.jpg">
 IMG - Example of website created using Semantic UI
 
 ## Why Semantic UI?
