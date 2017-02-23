@@ -1,7 +1,7 @@
 ---
 layout: essay
 type: essay
-title: Reflecting on UI Frameworks
+title: The Good and the Bad of UI framewoks
 date: 2017-02-23
 labels:
   - ICS 314
