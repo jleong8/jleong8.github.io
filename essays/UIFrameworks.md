@@ -8,6 +8,8 @@ labels:
 ---
 
 <img class="ui large right spaced image" src="../images/islandsnow.jpg">
+
+
 Example of website created using Semantic UI
 
 ## Why Semantic UI?
