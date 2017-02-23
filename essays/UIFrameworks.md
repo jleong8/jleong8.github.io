@@ -7,6 +7,9 @@ labels:
   - ICS 314
 ---
 
+<img class="ui medium right spaced image" src="../images/islandsnow.png">
+IMG - Example of website created using Semantic UI
+
 ## Why Semantic UI?
 
   Coming into Semantic UI, I had no prior experience of what UI frameworks can bring to the table. I was incredibly surprised by how useful
