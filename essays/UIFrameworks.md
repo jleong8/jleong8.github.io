@@ -1,14 +1,14 @@
 ---
 layout: essay
 type: essay
-title: UI Frameworks
+title: Reflecting on UI Frameworks
 date: 2017-02-23
 labels:
   - ICS 314
 ---
 
-<img class="ui medium right spaced image" src="../images/islandsnow.jpg">
-IMG - Example of website created using Semantic UI
+<img class="ui large right spaced image" src="../images/islandsnow.jpg">
+Example of website created using Semantic UI
 
 ## Why Semantic UI?
 
