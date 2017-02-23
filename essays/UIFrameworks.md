@@ -1,7 +1,7 @@
 ---
 layout: essay
 type: essay
-title: Coding Standard
+title: UI Frameworks
 date: 2017-02-23
 labels:
   - ICS 314
