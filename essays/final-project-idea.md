@@ -27,6 +27,7 @@ Important design goals for The Planner are:
 - To encourage students to stay organized
 - Promote campus hosted events
 - To spread word of all available clubs on campus
+- Import important school deadlines(ex. fafsa, class registration, parking pass, library book due dates)
 
 # Mockup page ideas
 
@@ -34,8 +35,19 @@ Important design goals for The Planner are:
 - Settings page
 - Calender page
 - Add/Delete/Modify tasks
+- Club page section
+- UH events section
 
 # Use case ideas
 
 - UH login, gets to personal homepage, show calender
-- User adds tasks
+- User adds tasks, modify tasks, remove tasks
+- User goes to settings, filter all club/school events
+- User goes to tasks, checks off completed tasks
+
+
+# Beyond the basics
+
+- Phone popup for reminder
+- Sync teacher inputted due dates with student calenders
+- Video notification for school events
