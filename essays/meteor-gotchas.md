@@ -7,7 +7,7 @@ labels:
   - Software Engineering
   - Meteor
 ---
-
+<img class="ui tiny right spaced image" src="../images/meteor.png">*Problems in meteor*
 
 # Solved Problem
 
