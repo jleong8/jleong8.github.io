@@ -8,7 +8,7 @@ labels:
   - Meteor
 ---
 
-<img class="ui tiny right spaced image" src="../images/meteor.png">
+<img class="ui tiny right spaced image" src="../images/meteor.png">*A review of my experience with meteor*
 
 ## Initial Thoughts
 
