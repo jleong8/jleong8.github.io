@@ -8,6 +8,8 @@ labels:
   - Ethics
 ---
 
+<img class="ui right spaced image" src="../images/ethics.jpg">*A comic regarding ethics of Software Engineering*
+
 ## What ethics means to me
 
 <p> Ethical means to follow a certain set of beliefs in which you not only follow but also act upon to preserve right and wrong morals. 
