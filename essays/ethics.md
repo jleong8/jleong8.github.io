@@ -8,7 +8,8 @@ labels:
   - Ethics
 ---
 
-<img class="ui right spaced image" src="../images/ethics.jpg">*A comic regarding ethics of Software Engineering*
+<img class="ui right spaced image" src="../images/ethics.jpg">
+*A comic regarding ethics of Software Engineering*
 
 ## What ethics means to me
 
