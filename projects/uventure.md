@@ -15,7 +15,7 @@ labels:
 summary: My team studied created a website that is targeted towards connecting the UH community through organizing adventures around the island of Hawaii.
 ---
 
-<img class="ui top aligned largeimage" src="../images/landing.png">
+<img class="ui top aligned large image" src="../images/landing.png">
 <img class="ui top aligned large image" src="../images/suggestion.png">
 
 <p> The website uVenture was created by Jason Leong, Christopher Nguyen, and Brian Mayashiro. This website was created for ICS 314, Software 
