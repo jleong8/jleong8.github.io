@@ -10,13 +10,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css" />
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>    
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script>
 
 
 </head>
 <body>
-    
+
+    <style>
+        body {
+            background-image: url("images/landing.jpg");
+            background-size: cover;
+          
+        }
+    </style>
 <!-- So this will be the navigation. if you want to use the navigation it will be within a <nav> bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <ul class="nav-right navbar-nav">
@@ -32,14 +39,14 @@
     </ul>
 </nav>
 
-
+   
   <div style="margin-top: 100px; margin-left: 250px;" class="ui container">
     <h1 style="margin-left: 20px;">List of Adventures</h1>
 
     <div style="padding-left: 20px;" class="ui cards">
 
       <div class="card">
-        <div class="ui large rounded image">
+        <div class="ui large rounded image" data-toggle="tooltip" data-placement="top" title="$rating">
           <img src="images/waimanofalls.jpg"/>
         </div>
         <div class="content">
@@ -47,26 +54,70 @@
           <div class="location">
             <p>Located in Pearl City</p>
           </div>
-           <div class="ui star rating" data-rating="1"></div>
+            <br>
+            Difficult Rating:
+            <br>
+           <div class="ui star rating" data-rating="1" data-toggle="tooltip" title="Most People have voted this a 1 star"></div>
             <br>
             <br>
-          <button type="button" class="btn btn-primary">More info</button>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">More info</button>
+          <!-- <button type="button" class="btn btn-primary"data-toggle="modal" data-target="#myModal">Contact the owners of the hike</button> -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Waimano falls</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    This hike is located at O‘ahu Hawaii, USA, Pearl City, HI 96782 <br>
+                    And you can also go to the website <a href = "http://www.unrealhawaii.com/2010/11/waimano-falls/">here</a><br><br>
+                    Waimano Falls Trail is a 2.8 mile moderately trafficked out and back trail located near Pearl City, Hawaii that features a waterfall and is rated as moderate. The trail offers a number of activity options and is accessible year-round. Dogs are also able to use this trail but must be kept on leash.
+                  </div>
+                </div>
+              </div>
+            </div>
+
         </div>
       </div>
 
       <div class="card">
         <div class="ui large rounded image">
-          <img src="images/kuliououridge.jpg"/>
+          <img src="images/kuliououridge.jpg"></img>
         </div>
         <div class="content">
           <div class="header">Kuliouou Ridge Trail</div>
           <div class="location">
             <p>Located in Aina Haina</p>
           </div>
-             <div class="ui star rating" data-rating="3"></div>
+            <br>
+            Difficulty Rating:
+            <br>
+             <div class="ui star rating" data-rating="3" data-toggle="tooltip" title="Most People have voted this a 3 star"></div>
             <br>
             <br>
-        <button type="button" class="btn btn-primary">More info</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalRidge">More info</button>
+            <!-- <button type="button" class="btn btn-primary"data-toggle="modal" data-target="#myModal">Contact the owners of the hike</button> -->
+            <div class="modal fade" id="myModalRidge" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Kuliouou Ridge Trail</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      This hike is located at Hahaione St, Honolulu, HI 96821 <br><br>
+                      And you can also go to the website  <a href = "http://www.unrealhawaii.com/2012/08/kuliouou-ridge-trail-oahu/">here</a> <br>
+                      Kuliouou Ridge Trail is a 4.4 mile heavily trafficked out and back trail located near Honolulu, Hawaii that features beautiful wild flowers and is rated as moderate. The trail offers a number of activity options and is accessible year-round. Dogs are also able to use this trail.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
         </div>
       </div>
 
@@ -79,15 +130,38 @@
           <div class="location">
             <p>Located on Kalanianaole Hwy</p>
           </div>
-            <div class="ui star rating" data-rating="5"></div>
+            <br>
+            Difficulty Rating:
+            <br>
+            <div class="ui star rating" data-rating="5" data-toggle="tooltip" title="Most People have voted this a 5 star"></div>
             <br>
             <br>
-          <button type="button" class="btn btn-primary">More info</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalHaihu">More info</button>
+            <!-- <button type="button" class="btn btn-primary"data-toggle="modal" data-target="#myModal">Contact the owners of the hike</button> -->
+            <div class="modal fade" id="myModalHaihu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Haiku Stairs</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      This hike is located at Haiku Rd Kaneohe, HI 96744<br>
+                      And you can also go to the website  <a href = "http://www.unrealhawaii.com/2010/05/haiku-stairs/">here</a> <br><br>
+                      Haiku Stairs [CLOSED/ PRIVATE PROPERTY] is a 2.4 mile moderately trafficked out and back trail located near Honolulu, Hawaii that offers scenic views and is rated as difficult. The trail is primarily used for hiking, walking, and nature trips and is accessible year-round.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
         </div>
       </div>
       </div>
-
-    </div>
+     
    <script src="js/script.js"></script>
+   
+   
 </body>
 </html>
