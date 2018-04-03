@@ -1,0 +1,685 @@
+<?php 
+session_start();
+require_once("connect.php"); 
+require_once("include/config.inc.php");
+require_once("include/function.php");
+
+secChk(); 
+modChk();
+?> 
+ 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<? 
+
+/**Grabbing all info from pg1 based off company id and sf330_id **/
+	$companyId = $_SESSION['company_id'];
+	$save = $_GET['id'];
+	$_SESSION['sf330_id'] = $save;
+	$update = $_GET['update'];
+ 
+	//echo $_SESSION['sf330_id'];
+
+	if(isset($save)) {
+	$n = "SELECT * FROM `sf330_pg2` WHERE company_id = $companyId AND sf330_id = $save ORDER BY `id` ASC";
+		//echo $n; 
+
+	$sel = $pdo->prepare($n);
+	$sel->execute();
+		while($res = $sel->fetch(PDO::FETCH_ASSOC)) { 
+			$name = $res['f12'];
+			$role_service = $res['f13']; 
+			$curr_years = $res['f14a']; 
+			$curr_firm  = $res['f14b'];
+			$name_firm = $res['f15'];
+			$education = $res['f16'];
+			$prof_registration = $res['f17']; 
+			$other_prof = $res['f18'];
+			$child = $res['child'];
+			$parent = $res['parent'];
+		}
+		
+	}
+	if(isset($save)) {
+
+	$f = "SELECT * FROM `sf330_pg2_f19` WHERE company_id = $companyId AND sf330_id = $save ORDER BY `id` ASC";
+		
+	$sel = $pdo->prepare($f);
+	$sel->execute();
+		$checkbox = array();
+		$title_location = array();
+		$prof_services = array();
+		$construction = array(); 
+		$brief_description = array();
+		$id = array(); 
+		
+		while($res = $sel->fetch(PDO::FETCH_ASSOC)) {		
+			$title_location[] = $res['f1']; 
+			$prof_services[] = $res['f2a'];
+			$construction[] = $res['f2b'];
+			$brief_description[]  = $res['f3']; 
+			$checkbox[] = $res['f3check'];
+			$id[] = $res['id'];  
+		}
+		$checkbox = array_reverse($checkbox);
+		//print_r($checkbox);
+		//$title_location = array_reverse($title_location);
+		//$prof_services = array_reverse($prof_services);
+		//$construction = array_reverse($construction);
+		//$brief_description = array_reverse($brief_description);
+		//$checkbox = array_reverse($checkbox);
+		
+		implode(', ' , $title_location);
+		implode(', ' , $prof_services);
+		implode(', ' , $construction);
+		implode(', ' , $brief_description);
+		implode(', ' , $checkbox);
+	}
+
+	if(isset($_POST['submit'])) {
+		$update = $_POST['update'];
+		//echo $_SESSION['sf330_id'];
+		$companyId = $_SESSION['company_id'];
+		$lastUpdatedBy =  $_SESSION['Adm_UsErId'];
+		$lastUpdated = date('Y-m-d H:i:s');
+		
+		$name = $_POST['name'];
+		$role_service = $_POST['role-service'];
+		$curr_years = $_POST['curr-years'];
+		$curr_firm = $_POST['curr-firm'];
+		$name_firm = $_POST['name-firm'];
+		$education = $_POST['education'];
+		$prof_registration = $_POST['prof-registration']; 
+		$other_prof = $_POST['other-prof'];
+		
+		$title_location = $_POST['title-location'];
+		$prof_services = $_POST['prof-services'];
+		$construction = $_POST['construction']; 
+		$brief_description = $_POST['brief-description'];
+		$checkbox = $_POST['checkbox'];
+		//print_r($checkbox);
+		//$check = implode(", ", $checkbox);
+		 
+		if($update == 1) { 
+			
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
+		$sql = "UPDATE `sf330_pg2` SET `f12` = '".$name."', `f13` = '".$role_service."', `f14a` = '".$curr_years."', `f14b` = '".$curr_firm."', `f15` = '".$name_firm."', `f16` = '".$education."', `f17` = '".$prof_registration."', `f18` = '".$other_prof."', `lastUpdated` = '".$lastUpdated."', `lastUpdatedBy` = '".$lastUpdatedBy."'  WHERE `sf330_id` = '".$_SESSION['sf330_id']."' AND `company_id` = '".$companyId."'";
+		//echo $sql; 
+		$sel = $pdo->prepare($sql); 
+		$sel->execute(); 
+		 
+		//echo $sf330_id;
+  		
+		foreach($title_location as $key => $d) {
+			
+			if(!empty($title_location[$key]) && !empty($prof_services[$key]) && !empty($construction[$key]) && !empty($brief_description[$key])) {
+			$sql2 = "UPDATE `sf330_pg2_f19` SET `f1` = '".$title_location[$key]."', `f2a` = '".$prof_services[$key]."', `f2b` = '".$construction[$key]."', `f3` = '".$brief_description[$key]."', `f3check` = '".$checkbox[$key]."', `lastUpdated` = '".$lastUpdated."', `lastUpdatedBy` = '".$lastUpdatedBy."' WHERE `sf330_id` = '".$_SESSION['sf330_id']."' AND `id` = '".$id[$key]."' AND `company_id` = '".$companyId."'";
+			//echo $sql2;
+			$sel2 = $pdo->prepare($sql2);
+			$sel2->execute();
+			
+		}
+			
+		}
+		if($child) {
+			header('Location: sf330-2.php?id='.$child.'&update=1');
+		}
+	    else {
+		header('Location: sf330-3.php?id='.$save.'&update=1');
+		}	
+		}	
+		else {
+		
+		$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$sql = "INSERT INTO `sf330_pg2` (`f12`,`f13`,`f14a`,`f14b`,`f15`,`f16`,`f17`,`f18`,`sf330_id`,`company_id`,`lastUpdated`,`lastUpdatedBy`) VALUES ('".$name."','".$role_service."','".$curr_years."','".$curr_firm."', '".$name_firm."','".$education."','".$prof_registration."','".$other_prof."','".$_SESSION['sf330_id']."','".$companyId."','".$lastUpdated."','".$lastUpdatedBy."')"; 
+		//echo $sql; 
+		$sel = $pdo->prepare($sql);
+		$sel->execute(); 
+		 
+		//echo $sf330_id;
+  
+		foreach($title_location as $key => $d) {
+			//echo $key;
+			if(!empty($title_location[$key]) && !empty($prof_services[$key]) && !empty($construction[$key]) && !empty($brief_description[$key])) {
+			$sql2 = "INSERT INTO `sf330_pg2_f19` (`f1`,`f2a`,`f2b`,`f3`, `sf330_id`,`company_id`,`lastUpdated`,`lastUpdatedBy`) VALUES ('".$title_location[$key]."','".$prof_services[$key]."','".$construction[$key]."','".$brief_description[$key]."','".$_SESSION['sf330_id']."','".$companyId."','".$lastUpdated."','".$lastUpdatedBy."')";
+				//echo $sql2;
+			//echo $title_location[$key];
+			$sel2 = $pdo->prepare($sql2);
+			$sel2->execute();
+		}
+		
+			header('Location: sf330-3.php?id='.$_SESSION['sf330_id'].'');
+		}
+		}
+	}
+	 
+			 
+	if(isset($_POST['next'])) {
+		$location = $_POST['current_url']; 
+		$parent = $_POST['parent'];
+		
+	
+		header('Location: sf330-3.php?id='.$location.'&update=1');
+		//header('Location: sf330-2.php?id='.$location.'');
+	} 
+	if(isset($_POST['prev'])) {
+		$location = $_POST['current_url']; 
+		$parent = $_POST['parent'];
+		echo $parent;
+		//echo $location; 
+		
+		if($parent) {
+			header('Location: sf330-2.php?id='.$parent.'&update=1');
+		}
+		else if($location) {
+			header('Location: sf330.php?id='.$location.'&update=1');
+		}
+		else {
+			header('Location: sf330-2.php?id='.$_SESSION['sf330_id'].'');
+		}
+		
+	}  
+	
+?>
+	
+
+<html>
+<head> 
+	<style>
+			/** 8.5x11 page size **/
+   body { height:297mm; width:210mm; margin-left:auto; margin-right:auto; }
+	#tahoma { font-family: Tahoma }
+		/** 
+	#open-sans { font-family: "Open Sans" } **/
+	.inline-block {
+		display: inline-block; 
+	}
+	@media print {
+	input { border: none;}
+	footer { page-break-after: always; }
+	.noprint { display: none ;}
+	}
+	input#name{
+       width: 120px;
+	 
+		/**border: none;**/
+	}
+    input#role-service{
+		margin-right: 0px;
+		margin-top: 0px;
+        margin-left: 75px;  
+		/**border: none;**/ 
+	}
+    input#curr-years{
+        margin-left: 120px;
+        width: 100px;
+		/**border: none;**/
+	}
+    input#curr-firm{
+        margin-left: 25px;
+        width: 120px;
+		/**border: none;**/
+	}
+    input#name-firm{
+        width: 210mm;
+    }
+    input#education{
+        margin-top: -4em;
+        margin-left: 0em;;
+        margin-bottom: 0em;
+		width: 75mm; 
+		height: 13mm;
+		/**border: none;**/
+	}
+    input#prof-registration{
+        margin-top: -4em;
+        margin-left: 4em;;
+        margin-bottom: 0em;
+		width: 117mm;
+		height: 13mm;
+		/**border: none;**/
+	}
+    input#other-prof{
+        margin-top: 0em;
+        margin-bottom: 0em;
+        width: 210mm;
+        height: 5mm;
+        /**border: none;**/
+    } 
+		
+    textarea#title-location6 {
+		resize: none;
+        margin-left: 48px;
+        margin-top: -20px;
+        margin-bottom: 0px;
+        height: 14mm;
+        width: 100mm;
+    }
+    textarea#title-location2 {
+        resize: none;
+        margin-left: 48px;
+        margin-top: -20px;
+        margin-bottom: 0px;
+        height: 14mm;
+        width: 100mm;
+    }
+    textarea#title-location3 {
+        resize: none;
+        margin-left: 48px;
+        margin-top: -20px;
+        margin-bottom: 0px;
+        height: 14mm;
+        width: 100mm;
+    }
+    textarea#title-location4 {
+        resize: none;
+        margin-left: 48px;
+        margin-top: -20px;
+        margin-bottom: 0px;
+        height: 14mm;
+        width: 100mm;
+    }
+    textarea#title-location5 {
+        resize: none;
+        margin-left: 48px;
+        margin-top: -20px;
+        margin-bottom: 0px;
+        height: 14mm;
+        width: 100mm;
+    }
+    input#prof-services6 {
+		margin-top: -20px;
+		margin-left: 475px;  
+		width: 33mm; 
+		height: 5mm;
+    }
+    input#prof-services2 {
+        margin-left: 475px;
+		width: 33mm;
+		height: 5mm;
+    }
+    input#prof-services3 {
+        margin-left: 475px;
+		width: 33mm;
+		height: 5mm;
+    }
+    input#prof-services4 {
+        margin-left: 475px;
+		width: 33mm;
+		height: 5mm;
+    }
+    input#prof-services5 {
+        margin-left: 475px;
+		width: 33mm;
+		height: 5mm;
+    }
+    input#construction6 {
+		margin-top: 20px;
+		margin-left: 40px;
+		width: 33mm;
+		height: 5mm;	
+    }
+    input#construction2 {
+        margin-left: 37px;
+		width: 33mm;
+		height: 5mm;
+    }
+    input#construction3 {
+        margin-left: 37px;
+		width: 33mm;
+		height: 5mm;
+    }
+    input#construction4 {
+        margin-left: 37px;
+		width: 33mm;
+		height: 5mm;
+    }
+    input#construction5 {
+        margin-left: 37px;
+		width: 33mm;
+		height: 5mm;
+    }
+    input#brief-description6 {
+        margin-left: 48px;
+        margin-top: 3.0px;
+        margin-bottom: 0px;
+        height: 7mm;
+        width: 198mm;
+    }
+    input#brief-description2 {
+        margin-left: 48px;
+        margin-top: 3.0px;
+        margin-bottom: 0px;
+        height: 7mm;
+        width: 198mm;
+    }
+    input#brief-description3 {
+        margin-left: 48px;
+        margin-top: 3.0px;
+        margin-bottom: 0px;
+        height: 7mm;
+        width: 198mm;
+    }
+    input#brief-description4 {
+        margin-left: 48px;
+        margin-top: 3.0px;
+        margin-bottom: 0px;
+        height: 7mm;
+        width: 198mm;
+    }
+    input#brief-description5 {
+        margin-left: 48px;
+        margin-top: 3.0px;
+        margin-bottom: 0px;
+        height: 7mm;
+        width: 198mm;
+    }
+    input#checkbox1 {
+        margin-left: 30px;
+    }
+	input#checkbox2 {
+        margin-left: 30px;
+    }
+	input#checkbox3 { 
+        margin-left: 30px;
+    }
+	input#checkbox4 {
+        margin-left: 30px;
+    }
+	input#checkbox5 {
+        margin-left: 30px;
+    } 	
+
+    input#title-location {
+        position: relative;
+        margin-left: 2.5em;
+        margin-bottom: 0em;
+        height: 4mm;
+        width: 80mm;
+    }
+    input#prof-services {
+        margin-top: -20px;
+        margin-left: 25px;
+        margin-bottom: 0em;
+		width: 39mm;
+		height: 5mm;
+		/**border: none;**/
+    }
+    input#construction {
+        position: relative;
+        margin-top: -4em;
+        margin-left: 1.7em;;
+        margin-bottom: 0em;
+		width: 43mm;
+		height: 5mm;
+		/**border: none;**/
+    }
+	form {
+		margin-bottom: 0em;  
+	}
+
+
+
+	</style>
+<meta charset="utf-8"> 
+</head>
+
+<body>
+	<form id="sectionE" action="sf330-2.php?id=<?php echo $_SESSION['sf330_id']?>" method="post">
+		
+		<div class="noprint">
+	<input id="prev" type="submit" value="Prev Page" name="prev" />
+	<input id="submit" type="submit" value="Submit" name="submit" />
+	<!--<input id="next" type="submit" value="Next Page" name="next" />-->
+		<input type="hidden" name="update" value=<?php echo $update ?>>
+		<input type="hidden" name="current_url" value=<?php echo $save ?>>
+		<input type="hidden" name="parent" value=<?php echo $parent ?>>  
+		<input type="button" value="Print" onclick="window.location='sf330-print.php?id=<? echo $save ?>'">
+		<a href class="add-section">Add Section</a>
+		<!-- 
+			<select id="numPages">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+			<option value="4">4</option>
+			<option value="5">5</option>
+		</select>
+		 -->
+	
+		</div>
+
+	<script>	
+	$(document).ready(function() { 
+		$("#numPages").change(function() {
+			var val = $(this).val();
+			if(val == 2) {
+				$form = $("<form></form>");
+				$form.append('<center><h2 id="tahoma" style="margin-bottom:0em;">City &amp; County of Honolulu </h2></center>');
+				$form.append('<h3 style="margin-top:0em; margin-bottom:0em;"><center>E. RESUMES OF KEY PERSONNEL PROPOSED FOR THIS SERVICE CATEGORY</center></h3>');
+				$form.append('<h3 style="margin-top:0em;"><center>(Complete one Section E for each key person.)</center></h3>');
+				$form.append('<hr style="height:0.5px;background-color:#333; margin-bottom: 0em; margin-top: 0em;" />');
+				$form.append('<div class="inline-block"><h5 id="open-sans" style="margin-top: 0em;">12. NAME</h5></div>');
+				$form.append('<div class="inline-block"><h5 id="open-sans" style="margin-top: 0em; margin-left: 10em;">13. ROLE IN SERVICE CATEGORY</h5></div>');
+				$form.append('<div class="inline-block"><h5 id="open-sans" style="margin-top: 0em; margin-left: 12em">14. YEARS EXPERIENCE</h5></div>');
+				
+				$('body').append($form);
+			}
+		});
+	});
+	</script>	 
+	<div class="repeat-role"> 
+	<center><h2 id="tahoma" style="margin-bottom:0em;">City &amp; County of Honolulu </h2></center>
+		
+	<h3 style="margin-top:0em; margin-bottom:0em;"><center>E. RESUMES OF KEY PERSONNEL PROPOSED FOR THIS SERVICE CATEGORY</center></h3>
+	<h3 style="margin-top:0em;"><center>(Complete one Section E for each key person.)</center></h3>
+    <hr style="height:0.5px;background-color:#333; margin-bottom: 0em; margin-top: 0em;" />
+    <div class="inline-block"><h5 id="open-sans" style="margin-top: 0em;">12. NAME</h5></div>
+    <div class="inline-block"><h5 id="open-sans" style="margin-top: 0em; margin-left: 10em;">13. ROLE IN SERVICE CATEGORY</h5></div>
+    <div class="inline-block"><h5 id="open-sans" style="margin-top: 0em; margin-left: 12em">14. YEARS EXPERIENCE</h5></div>
+    
+    <hr style="height:0.5px; width: 305px; background-color:#333; margin-bottom: 0em; margin-top: -20px; margin-right: 0.2em;" />
+    
+    <div class="inline-block"><h6 id="open-sans" style="margin-top: 0px; margin-left: 46em; margin-bottom: 0.2em;">a. TOTAL</h6></div>
+    <div class="inline-block"><h6 id="open-sans" style="margin-top: 0px; margin-left: 7em; margin-bottom: 0.2em;">b. WITH CURRENT FIRM</h6></div>
+		
+	    <div class="inline-block">
+	  <input type="text" id="name" name="name" value="<?php echo $name;?>">
+	  </div>
+    <div class="inline-block">
+	  <input type="text" id="role-service" name="role-service" value="<?php echo $role_service;?>">
+	  </div>	
+    
+       <div class="inline-block">
+	  <input type="text" id="curr-years" name="curr-years" value="<?php echo $curr_years;?>">
+	  </div>
+    
+      <div class="inline-block">
+	  <input type="text" id="curr-firm" name="curr-firm" value="<?php echo $curr_firm;?>">
+	  </div>
+	 
+ 
+    
+        <hr width="1" size="75" style="margin-left: 12em; margin-top: -63px; background-color:#333;">
+    <hr width="1" size="75" style="margin-left: 30em; margin-top: -83px; background-color:#333;">
+    
+    
+        <hr style="height:0.5px; background-color:#333; margin-top: -0.4em" />
+    <hr width="1" size="55" style="margin-left: 38em; margin-bottom: 0em; margin-top: -65px; background-color:#333;">
+		
+    <h5 id="open-sans" style="margin:0em;">15. FIRM NAME AND LOCATION</h5>
+	
+	  <input type="text" id="name-firm" name="name-firm" value="<?php echo $name_firm;?>">
+ 
+<hr style="height:0.5px; background-color:#333; margin-top: 2mm; margin-bottom: 0em;" />
+
+    <div class="inline-block"><h5 id="open-sans" style="margin-top: 0em;">EDUCATION (DEGREE AND SPECIALIZATION)</h5></div>
+    <div class="inline-block"><h5 id="open-sans" style="margin-top: 0em; margin-left: 1em; ">17. CURRENT PROFESSIONAL REGISTRATION(STATE AND DISCIPLINE)</h5></div>
+
+    <div class="inline-block">
+	  <input type="text" id="education" name="education" value="<?php echo $education;?>">
+	  </div> 
+    <div class="inline-block">
+	  <input type="text" id="prof-registration" name="prof-registration" value="<?php echo $prof_registration;?>">
+	  </div> 
+	
+    <hr width="1" size="85" style="margin-left: 19.5em; margin-bottom: 0em; margin-top: -4.8em; background-color:#333;">
+    <hr style="height:0.5px; background-color:#333; margin-top: 0mm; margin-bottom: 0em;" />
+    
+    <h5 id="open-sans" style="margin:0em;">18. OTHER PROFESSIONAL QUALIFICATIONS (Publications, Organizations, Training, Awards,etc.)</h5>
+	
+	  <input type="text" id="other-prof" name="other-prof" value="<?php echo $other_prof;?>">
+	
+    <hr style="height:0.5px; background-color:#333; margin-bottom: 0em;" />
+	            
+    <div class="inline-block"><center><h5 id="open-sans" style="margin-top: 1em; margin-left: 75mm;">19. RELEVANT PROJECTS</h5></center></div>
+<hr style="height:0.5px; background-color:#333; margin-top: -2mm; width: 210mm;" />
+
+    
+    <!-- part A -->
+	
+		
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px;">a.</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 32px; margin-bottom: 0px;">(1) TITLE AND LOCATION (City and State)</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 250px; margin-bottom: 0em;">(2) YEAR COMPLETED</h5></div>
+		<textarea id="title-location2" name="title-location[]" wrap="soft"><?php echo $brief_description[0]?></textarea>
+		<hr style="height:0.5px; width: 330px; background-color:#333; margin-bottom: -4.0px; margin-top: -48px; margin-right: -4.0px;" />
+		<hr width="1" size="160px" style="position: absolute; margin-left: 30px; margin-top: -40px; background-color:#333;">  
+		<hr width="1" size="100" style="position: absolute; margin-left: 465px; margin-top: -38px; background-color:#333;">  
+		<div class="inline-block"><h6 id="open-sans" style="margin-top: 4px; margin-left: 475px; margin-bottom: 8.0px;">PROFESSIONAL SERVICES</h6>
+		<h6 id="open-sans" style="margin-top: -20px; margin-left: 640px; margin-bottom: 8.0px;">CONSTRUCTION (if applicable)</h6></div> 
+		<div class="inline-block"> 
+	 	<input type="text" id="prof-services2" name="prof-services[]" value="<?=$prof_services[0]?>">
+			<input type="text" id="construction2" name="construction[]" value="<?=$construction[0]?>"></div>
+		 <hr style="height:0.5px; width: 765px; background-color:#333; margin-bottom: -4.0px; margin-top: 14px; margin-right: -4.0px;" />
+	 	 <div class="inline-block"><h5 id="open-sans" style="margin-top: 8.0px; margin-left: 48px; margin-bottom: 0px;">(3) BRIEF DESCRIPTION (Brief scope, size, cost, etc.) AND SPECIFIC ROLE</h5></div>
+		<div class="inline-block">
+    	<input id="checkbox2" name="checkbox[]" value="1" type="checkbox"<?php if((strpos($checkbox[1], "1")) !==false)  {?> checked="checked" <?php } ?>/></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 3.0px; margin-bottom: 0px; font-size: 8px;">Check if project performed with current firm</h5></div>
+		<div class="inline-block">
+	  	<input type="text" id="brief-description2" name="brief-description[]" value="<?=$brief_description[0]?>"></div>
+    	<hr style="height:0.5px; background-color:#333; margin-top: 4.0px; width: 210mm;" />
+	<!--part B -->
+		
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px;">b.</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 32px; margin-bottom: 0px;">(1) TITLE AND LOCATION (City and State)</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 250px; margin-bottom: 0em;">(2) YEAR COMPLETED</h5></div>
+		<textarea id="title-location2" name="title-location[]" wrap="soft"><?php echo $brief_description[1]?></textarea>
+		<hr style="height:0.5px; width: 330px; background-color:#333; margin-bottom: -4.0px; margin-top: -48px; margin-right: -4.0px;" />
+		<hr width="1" size="160px" style="position: absolute; margin-left: 30px; margin-top: -40px; background-color:#333;">  
+		<hr width="1" size="100" style="position: absolute; margin-left: 465px; margin-top: -38px; background-color:#333;">  
+		<div class="inline-block"><h6 id="open-sans" style="margin-top: 4px; margin-left: 475px; margin-bottom: 8.0px;">PROFESSIONAL SERVICES</h6>
+		<h6 id="open-sans" style="margin-top: -20px; margin-left: 640px; margin-bottom: 8.0px;">CONSTRUCTION (if applicable)</h6></div> 
+		<div class="inline-block"> 
+	 	<input type="text" id="prof-services2" name="prof-services[]" value="<?=$prof_services[1]?>">
+			<input type="text" id="construction2" name="construction[]" value="<?=$construction[1]?>"></div>
+		 <hr style="height:0.5px; width: 765px; background-color:#333; margin-bottom: -4.0px; margin-top: 14px; margin-right: -4.0px;" />
+	 	 <div class="inline-block"><h5 id="open-sans" style="margin-top: 8.0px; margin-left: 48px; margin-bottom: 0px;">(3) BRIEF DESCRIPTION (Brief scope, size, cost, etc.) AND SPECIFIC ROLE</h5></div>
+		<div class="inline-block">
+    	<input id="checkbox2" name="checkbox[]" value="1" type="checkbox"<?php if((strpos($checkbox[1], "1")) !==false)  {?> checked="checked" <?php } ?>/></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 3.0px; margin-bottom: 0px; font-size: 8px;">Check if project performed with current firm</h5></div>
+		<div class="inline-block">
+	  	<input type="text" id="brief-description2" name="brief-description[]" value="<?=$brief_description[1]?>"></div>
+    	<hr style="height:0.5px; background-color:#333; margin-top: 4.0px; width: 210mm;" />
+		
+	<!-- part C -->
+		
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px;">c.</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 32px; margin-bottom: 0px;">(1) TITLE AND LOCATION (City and State)</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 250px; margin-bottom: 0em;">(2) YEAR COMPLETED</h5></div>
+		<textarea id="title-location3" name="title-location[]" wrap="soft"><?php echo $brief_description[2]?></textarea>
+		<hr style="height:0.5px; width: 330px; background-color:#333; margin-bottom: -4.0px; margin-top: -48px; margin-right: -4.0px;" />
+		<hr width="1" size="160px" style="position: absolute; margin-left: 30px; margin-top: -40px; background-color:#333;">  
+		<hr width="1" size="100" style="position: absolute; margin-left: 465px; margin-top: -38px; background-color:#333;">  
+		<div class="inline-block"><h6 id="open-sans" style="margin-top: 4px; margin-left: 475px; margin-bottom: 8.0px;">PROFESSIONAL SERVICES</h6>
+		<h6 id="open-sans" style="margin-top: -20px; margin-left: 640px; margin-bottom: 8.0px;">CONSTRUCTION (if applicable)</h6></div> 
+		<div class="inline-block">
+	 	<input type="text" id="prof-services3" name="prof-services[]" value="<?=$prof_services[2]?>">
+			<input type="text" id="construction3" name="construction[]" value="<?=$construction[2]?>"></div>
+		 <hr style="height:0.5px; width: 765px; background-color:#333; margin-bottom: -4.0px; margin-top: 14px; margin-right: -4.0px;" />
+	 	 <div class="inline-block"><h5 id="open-sans" style="margin-top: 8.0px; margin-left: 48px; margin-bottom: 0px;">(3) BRIEF DESCRIPTION (Brief scope, size, cost, etc.) AND SPECIFIC ROLE</h5></div>
+		<div class="inline-block">
+    	<input id="checkbox3" name="checkbox[]" value="1" type="checkbox"<?php if((strpos($checkbox[2], "1")) !==false)  {?> checked="checked" <?php } ?>/></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 3.0px; margin-bottom: 0px; font-size: 8px;">Check if project performed with current firm</h5></div>
+		<div class="inline-block">
+	  	<input type="text" id="brief-description3" name="brief-description[]" value="<?=$brief_description[2]?>"></div>
+    	<hr style="height:0.5px; background-color:#333; margin-top: 4.0px; width: 210mm;" />
+	
+	<!-- part D -->
+		
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px;">d.</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 32px; margin-bottom: 0px;">(1) TITLE AND LOCATION (City and State)</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 250px; margin-bottom: 0em;">(2) YEAR COMPLETED</h5></div>
+		<textarea id="title-location4" name="title-location[]" wrap="soft"><?php echo $brief_description[3]?></textarea>
+		<hr style="height:0.5px; width: 330px; background-color:#333; margin-bottom: -4.0px; margin-top: -48px; margin-right: -4.0px;" />
+		<hr width="1" size="160px" style="position: absolute; margin-left: 30px; margin-top: -40px; background-color:#333;">  
+		<hr width="1" size="100" style="position: absolute; margin-left: 465px; margin-top: -38px; background-color:#333;">  
+		<div class="inline-block"><h6 id="open-sans" style="margin-top: 4px; margin-left: 475px; margin-bottom: 8.0px;">PROFESSIONAL SERVICES</h6>
+		<h6 id="open-sans" style="margin-top: -20px; margin-left: 640px; margin-bottom: 8.0px;">CONSTRUCTION (if applicable)</h6></div> 
+		<div class="inline-block">
+	 	<input type="text" id="prof-services4" name="prof-services[]" value="<?=$prof_services[3]?>">
+			<input type="text" id="construction4" name="construction[]" value="<?=$construction[3]?>"></div>
+		 <hr style="height:0.5px; width: 765px; background-color:#333; margin-bottom: -4.0px; margin-top: 14px; margin-right: -4.0px;" />
+	 	 <div class="inline-block"><h5 id="open-sans" style="margin-top: 8.0px; margin-left: 48px; margin-bottom: 0px;">(3) BRIEF DESCRIPTION (Brief scope, size, cost, etc.) AND SPECIFIC ROLE</h5></div>
+		<div class="inline-block">
+    	<input id="checkbox4" name="checkbox[]" value="1" type="checkbox"<?php if((strpos($checkbox[3], "1")) !==false)  {?> checked="checked" <?php } ?>/></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 3.0px; margin-bottom: 0px; font-size: 8px;">Check if project performed with current firm</h5></div>
+		<div class="inline-block">
+	  	<input type="text" id="brief-description4" name="brief-description[]" value="<?=$brief_description[3]?>"></div>
+    	<hr style="height:0.5px; background-color:#333; margin-top: 4.0px; width: 210mm;" />
+		
+	<!-- part E -->
+		
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px;">e.</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 32px; margin-bottom: 0px;">(1) TITLE AND LOCATION (City and State)</h5></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 0px; margin-left: 250px; margin-bottom: 0em;">(2) YEAR COMPLETED</h5></div>
+		<textarea id="title-location5" name="title-location[]" wrap="soft"><?php echo $brief_description[4]?></textarea>
+		<hr style="height:0.5px; width: 330px; background-color:#333; margin-bottom: -4.0px; margin-top: -48px; margin-right: -4.0px;" />
+		<hr width="1" size="160px" style="position: absolute; margin-left: 30px; margin-top: -40px; background-color:#333;">  
+		<hr width="1" size="100" style="position: absolute; margin-left: 465px; margin-top: -38px; background-color:#333;">  
+		<div class="inline-block"><h6 id="open-sans" style="margin-top: 4px; margin-left: 475px; margin-bottom: 8.0px;">PROFESSIONAL SERVICES</h6>
+		<h6 id="open-sans" style="margin-top: -20px; margin-left: 640px; margin-bottom: 8.0px;">CONSTRUCTION (if applicable)</h6></div> 
+		<div class="inline-block">
+	 	<input type="text" id="prof-services5" name="prof-services[]" value="<?=$prof_services[4]?>">
+			<input type="text" id="construction5" name="construction[]" value="<?=$construction[4]?>"></div>
+		 <hr style="height:0.5px; width: 765px; background-color:#333; margin-bottom: -4.0px; margin-top: 14px; margin-right: -4.0px;" />
+	 	 <div class="inline-block"><h5 id="open-sans" style="margin-top: 8.0px; margin-left: 48px; margin-bottom: 0px;">(3) BRIEF DESCRIPTION (Brief scope, size, cost, etc.) AND SPECIFIC ROLE</h5></div>
+		<div class="inline-block">
+    	<input id="checkbox5" name="checkbox[]" value="1" type="checkbox"<?php if((strpos($checkbox[4], "1")) !==false)  {?> checked="checked" <?php } ?>/></div>
+		<div class="inline-block"><h5 id="open-sans" style="margin-top: 3.0px; margin-bottom: 0px; font-size: 8px;">Check if project performed with current firm</h5></div>
+		<div class="inline-block">
+	  	<input type="text" id="brief-description5" name="brief-description[]" value="<?=$brief_description[4]?>"></div>
+    	<hr style="height:0.5px; background-color:#333; margin-top: 4.0px; width: 210mm;" />
+		
+		
+		</div>
+		
+		<script>
+		$(document).on('click', '.add-section', function() {
+			var currentCount = $('.repeat-role').length;
+			var newCount = currentCount + 1;
+			var lastRepeatingGroup = $('.repeat-role').last();
+			var template = $('.repeat-role').first();
+			var newSection = template.clone();
+			lastRepeatingGroup.removeClass('current-role');
+			newSection.insertAfter(lastRepeatingGroup).hide().addClass('current-role new-role').slideDown(1000);
+			newSection.find("input").each(function (index, input) {
+				var i = $(this).attr('id');
+				$(this).attr('id', i + newCount);
+				alert(i + newCount);
+			});
+			
+			return false;
+		});
+		
+		</script>
+	</form> 
+
+
+     
+	
+		
+		
+</body>
+	<footer></footer>
+</html>
